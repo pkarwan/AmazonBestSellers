@@ -115,14 +115,51 @@ shinyServer(function(input, output, session) {
   #*Data Exploration 2
   # Output numerical summary
   output$summary <- renderPrint({
-    if(input$variableName == "Price" || input$variableName == "Reviews")
-    summary(bestSellerData %>% filter(input$variableName))
-    
-    else
-      table(input$variableName)
+    if(input$variableName == "Price" || input$variableName == "Reviews" || input$variableName == "User.Rating") 
+      summary(bestSellerData[,input$variableName])
       
     
+    else if(input$variableName == "Year" || input$variableName == "Genre") 
+      table(bestSellerData[,input$variableName])
+      
   })
+  
+  #Plot Helper function
+  histplotHelper <- function() {
+    #ggplot(bestSellerData, aes(input$variableName)) + geom_bar(aes(color = Genre)) + ggtitle(input$variableName)
+    ggplot(bestSellerData, aes(bestSellerData$User.Rating)) + geom_bar(aes(color = bestSellerData$Genre)) +
+      ggtitle("User Ratings")
+  }
+  
+  output$histPlot <- renderPlot({
+    if(input$variableName == "Price" || input$variableName == "Reviews" || input$variableName == "User.Rating") {
+      histplotHelper()
+    }
+      
+      
+    if(input$variableName == "Year" || input$variableName == "Genre") {
+      ggplot(bestSellerData, aes(factor(Year), User.Rating)) +
+            geom_boxplot(aes(color = Genre)) + xlab("Year") + ylab("User Ratings") +
+            ggtitle("Year vs User Ratings ")
+      
+      # ggplot(bestSellerData, aes(Year, User.Rating)) +
+      #   geom_bar(aes(fill = Genre), position = "dodge") + xlab("Year") + ylab("User Ratings") +
+      #   ggtitle("Year vs User Ratings"),
+    }
+  })
+  
+  #Download plots
+  output$histPlotDownload <- downloadHandler(
+    filename =  function() {
+      paste0(input$variableName,".png")
+    },
+    content = function(file) {
+      png(file) # open the png device
+      print(histplotHelper())
+      dev.off()  # turn the device off
+      
+    }
+  )
   
   
 })

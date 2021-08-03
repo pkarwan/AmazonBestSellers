@@ -1,4 +1,4 @@
-#install.packages(c("shiny", "shinydashboard", "tidyverse", "dplyr", "ggplot2", "stringr", "caret", "DT", "plotly", "tree", "rattle", "randomForest" ))
+#install.packages(c("shiny", "shinydashboard", "tidyverse", "dplyr", "ggplot2", "stringr", "caret", "DT", "plotly", "tree", "rattle", "randomForest", "shinycssloaders" ))
 
 library(shiny)
 library(shinydashboard)
@@ -9,15 +9,20 @@ library(stringr)
 library(caret)
 library(DT)
 library(plotly)
+library(shinycssloaders)
 
 #Load data
 bestSellerData<- as.tibble(read.csv("./data/bestsellers_with_categories.csv"))
+bestSellerData
+#bestSellerData <- bestSellerData %>% unique.data.frame(bestSellerData$Name)
+#str(bestSellerData)
 
 
 # Filter for the day of the week, remove weekday column and convert columns to factor as appropriate.
 
 factorCols <- c("Year","Genre")
 bestSellerData <-  bestSellerData %>% select(everything()) %>%mutate(across(factorCols, factor))
+
 bestSellerData
 
 
@@ -89,12 +94,11 @@ shinyUI(
                 tags$div(
                      h4("Summary"),
                      verbatimTextOutput("summary"),
-                     h4("Historgram"),
-                     plotOutput("histPlot"),
-                     downloadButton("download_histplot", "Download Plot"),
-                     h4("Data"),
-                     DT::dataTableOutput("selectedData"),
-                     downloadButton("download_selectedData", "Save data")
+                     br(),
+                     tags$div( withSpinner(plotOutput("histPlot"),  type = getOption("spinner.type", default = 6),
+                                           color = getOption("spinner.color", default = "#FFA500")), 
+                               downloadButton(outputId = "histPlotDownload", label = "Download Plot")),
+                     
                    )
                  
         ),
@@ -102,7 +106,55 @@ shinyUI(
         #Modeling Page
         
         tabItem(tabName = "modeling",
-                fluidRow( h2("4. Modeling"), br(),
+                  fluidPage(
+                    tabsetPanel(
+                      tabPanel(
+                        "Modeling Info",
+                        
+                        tags$div(
+                          fluidRow("Multiple Linear Model"),
+                          fluidRow("Advantages : "),
+                          fluidRow("Drawbacks :"),
+                        ),br(),br(),
+                        
+                        tags$div(
+                          fluidRow("Random Forest Model"),
+                          fluidRow("Advantages : "),
+                          fluidRow("Drawbacks :"),
+                        ),br(),br(),
+                        
+                        tags$div(
+                          fluidRow("Classification Tree Model"),
+                          fluidRow("Advantages : "),
+                          fluidRow("Drawbacks :"),
+                        )
+                      ),
+                      tabPanel(
+                        "Modeling Fitting",
+                        fluidPage(
+                          fluidRow(
+                            #slider
+                          ),
+                          fluidRow(
+                            #models
+                            column(4, "Multiple Linear Model"),
+                            column(4, "Random Forest Model"),
+                            column(4, "Classification Tree Model")
+                          )
+                        )
+                      ),
+                      tabPanel(
+                        "Prediction",
+                        sidebarLayout(
+                          sidebarPanel(
+                            #Predictors Selection
+                          ),
+                          mainPanel(
+                            #Prediction for the selected predictors
+                          )
+                        )
+                      )
+                    )
                 )),
         
         #Dataset page
