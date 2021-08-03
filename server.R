@@ -12,6 +12,7 @@ library(tree)
 library(rattle)
 library(randomForest)
 library(plotly)
+library(shinycssloaders)
 
 
 bestSellerData<- as.tibble(read.csv("./data/bestsellers_with_categories.csv"))
@@ -119,16 +120,17 @@ shinyServer(function(input, output, session) {
       summary(bestSellerData[,input$variableName])
       
     
-    else if(input$variableName == "Year" || input$variableName == "Genre") 
+    else if(input$variableName == "Genre") 
       table(bestSellerData[,input$variableName])
+    
+    else if(input$variableName == "Year") 
+      table(bestSellerData[,input$variableName],bestSellerData %>% group_by(bestSellerData$Year) %>% summarise(bestSellerData$Reviews))
       
   })
   
   #Plot Helper function
   histplotHelper <- function() {
-    #ggplot(bestSellerData, aes(input$variableName)) + geom_bar(aes(color = Genre)) + ggtitle(input$variableName)
-    ggplot(bestSellerData, aes(bestSellerData$User.Rating)) + geom_bar(aes(color = bestSellerData$Genre)) +
-      ggtitle("User Ratings")
+    ggplot(bestSellerData, aes(input$variableName)) + geom_bar(aes(color = Genre)) + ggtitle(input$variableName)
   }
   
   output$histPlot <- renderPlot({
@@ -138,13 +140,9 @@ shinyServer(function(input, output, session) {
       
       
     if(input$variableName == "Year" || input$variableName == "Genre") {
-      ggplot(bestSellerData, aes(factor(Year), User.Rating)) +
+      ggplot(bestSellerData, aes(Year, User.Rating)) +
             geom_boxplot(aes(color = Genre)) + xlab("Year") + ylab("User Ratings") +
             ggtitle("Year vs User Ratings ")
-      
-      # ggplot(bestSellerData, aes(Year, User.Rating)) +
-      #   geom_bar(aes(fill = Genre), position = "dodge") + xlab("Year") + ylab("User Ratings") +
-      #   ggtitle("Year vs User Ratings"),
     }
   })
   

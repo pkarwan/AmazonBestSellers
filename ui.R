@@ -89,7 +89,7 @@ shinyUI(
         tabItem(tabName = "Data_Exploration2",
                  tags$div(selectInput("variableName", "Variables:", selected = "Reviews",
                                  choices = colnames(bestSellerData)),
-                     hr(),
+                     br(),
                    ),
                 tags$div(
                      h4("Summary"),
@@ -114,19 +114,45 @@ shinyUI(
                         tags$div(
                           fluidRow("Multiple Linear Model"),
                           fluidRow("Advantages : "),
+                                  tags$ul("Multiple regression allows a statistician to explore the effect of more than one variable on the outcome he wants to study."),
+                                  tags$ul("It uses data very efficiently and can make useful predictions with small data sets."),        
+                                  tags$ul("Ability to determine the relative influence of one or more predictor variables to the criterion value."),
+                                  tags$ul("Ability to identify outliers, or anomalies."),
+                                  tags$ul("It can allow to construct easy equations of various parameters which can help give predictions and can accordingly be optimized."),
+                            br(),       
                           fluidRow("Drawbacks :"),
+                                tags$ul("By its nature, multiple linear regression only looks at linear relationships between dependent and independent variables."),
+                                tags$ul("Multiple Linear Regression Is Sensitive to Outliers"),
+                                tags$ul("Data needs to be independent")
+                          
                         ),br(),br(),
                         
                         tags$div(
                           fluidRow("Random Forest Model"),
                           fluidRow("Advantages : "),
+                          tags$ul("Random Forest works well with both categorical and continuous values"),
+                          tags$ul("It reduces overfitting in decision trees and helps to improve the accuracy"),
+                          tags$ul("It automates missing values present in the data"),
+                          tags$ul("Normalising of data is not required as it uses a rule-based approach."),
+                          tags$ul("It is flexible to both classification and regression problems"),br(),
                           fluidRow("Drawbacks :"),
+                          tags$ul("Random Forest Model requires much computational power as well as resources as it builds numerous trees to combine their outputs. "),
+                          tags$ul("It also requires much time for training as it combines a lot of decision trees to determine the class."),
+                          tags$ul("Due to the ensemble of decision trees, it also suffers interpretability and fails to determine the significance of each variable"),
                         ),br(),br(),
                         
                         tags$div(
                           fluidRow("Classification Tree Model"),
                           fluidRow("Advantages : "),
+                          tags$ul("Simple to understand and easy to interpret output"),
+                          tags$ul("Predictors don't need to be scaled"),
+                          tags$ul("No statistical assumptions necessary"),
+                          tags$ul("Built in variable selection"),
+                          br(),
                           fluidRow("Drawbacks :"),
+                          tags$ul("Small changes in data can vastly change tree"),
+                          tags$ul("Greedy algorithm necessary (no optimal algorithm)"),
+                          tags$ul("Need to prune"),
                         )
                       ),
                       tabPanel(
