@@ -112,7 +112,11 @@ shinyUI(
                         "Modeling Info",
                         
                         tags$div(
-                          fluidRow("Multiple Linear Model"),
+                          fluidRow(strong("Multiple Linear Model")),
+                                  tags$div( "Multiple Linear Model is a statistical technique that uses more than one explanatory variables to predict the outcome of a response variable. 
+                                            The goal of multiple linear regression (MLR) is to model the linear relationship between the explanatory (independent) variables and response (dependent) variable."),
+                                  h3("Formula and Calculation of Multiple Linear Regression"),
+                                  tags$div("${Y}_{i} = \beta_{0} + \beta_{1}{x}_{i}{1} + \beta_{2}{x}_{i}{2} +...+ \beta_p{x}_{i}{p} + {E}_{i}$"),
                           fluidRow("Advantages : "),
                                   tags$ul("Multiple regression allows a statistician to explore the effect of more than one variable on the outcome he wants to study."),
                                   tags$ul("It uses data very efficiently and can make useful predictions with small data sets."),        
@@ -128,7 +132,7 @@ shinyUI(
                         ),br(),br(),
                         
                         tags$div(
-                          fluidRow("Random Forest Model"),
+                          fluidRow(strong("Random Forest Model")),
                           fluidRow("Advantages : "),
                           tags$ul("Random Forest works well with both categorical and continuous values"),
                           tags$ul("It reduces overfitting in decision trees and helps to improve the accuracy"),
@@ -142,7 +146,7 @@ shinyUI(
                         ),br(),br(),
                         
                         tags$div(
-                          fluidRow("Classification Tree Model"),
+                          fluidRow(strong("Classification Tree Model")),
                           fluidRow("Advantages : "),
                           tags$ul("Simple to understand and easy to interpret output"),
                           tags$ul("Predictors don't need to be scaled"),
